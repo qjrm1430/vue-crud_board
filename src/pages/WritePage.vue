@@ -25,9 +25,7 @@ const currentTime = ref(new Date());
 const post = ref({ name: "", title: "", content: "" });
 const submitForm = () => {
   boardStore.addPost({
-    name: post.value.name,
-    title: post.value.title,
-    content: post.value.content,
+    ...post.value,
     date: format(currentTime.value, "yyyy-MM-dd HH:mm:ss"),
   });
 

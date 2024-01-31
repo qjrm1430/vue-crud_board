@@ -1,13 +1,28 @@
 declare namespace PostBoard {
-  interface boardsList {
-    [id: number, name: string, title: string, date: string, content: string];
+  interface Board {
+    bid: number;
+    name: string;
+    title: string;
+    date: string;
+    content: string;
+    comments: Comment[];
   }
-  interface Comments {
-    [id: number, text: string, replies: Reply[], newReply: string];
+  interface Post {
+    bid: number;
+    name: string;
+    title: string;
+    date: string;
+    content: string;
+    comments: Comment[];
+  }
+  interface Comment {
+    cid: number;
+    ctext: string;
+    replies: Reply[];
   }
   interface Reply {
-    id: number;
-    text: string;
+    rid: number;
+    rtext: string;
   }
 }
 export default PostBoard;

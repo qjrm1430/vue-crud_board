@@ -2,12 +2,14 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { boardsStore } from "@/store/boardStore";
+import { storeToRefs } from "pinia";
 // import AutoSearch from "@/components/AutoSearch.vue";
 
 const router = useRouter();
 const boardStore = boardsStore();
-const list = ref(boardStore.getBoards);
+const { boardsList } = storeToRefs(boardStore);
 const search = ref("");
+
 const moveWrite = () => {
   router.push({ path: "/write" });
 };
@@ -15,6 +17,16 @@ const moveWrite = () => {
 const onCellClick = (item: any) => {
   router.push({ path: "/post", query: { bid: item.bid } });
 };
+const headers = [
+  {
+    align: "start",
+    sortable: false,
+    title: "BID",
+  },
+  { title: "Name" },
+  { title: "Title" },
+  { title: "Date" },
+];
 </script>
 
 <template>
@@ -31,23 +43,26 @@ const onCellClick = (item: any) => {
       <div class="ma-8">검색</div>
       <v-text-field
         v-model="search"
-        append-icon="mdi-magnify"
+        prepend-inner-icon="mdi-magnify"
         label="Search"
         single-line
         hide-details
         class="ma-8"
       ></v-text-field>
       <div align="right" class="mr-8">
-        <v-btn @click="moveWrite()"> 글쓰기 </v-btn>
+        <v-btn @click="moveWrite"> 글쓰기 </v-btn>
       </div>
       <v-card class="ma-8">
-        <v-data-table :items="list.slice(1)">
+        <v-data-table
+          :items="boardsList"
+          :headers="(headers as any)"
+          :search="search"
+        >
           <template v-slot:item="{ item }">
             <tr>
-              <!-- 여기에 각 셀에 해당하는 내용을 표시합니다. -->
               <td>{{ item.bid }}</td>
               <td>{{ item.name }}</td>
-              <td @click="onCellClick(item)" :class="`cursor-pointer`">
+              <td @click="onCellClick(item)" style="cursor: pointer">
                 {{ item.title }}
               </td>
               <td>{{ item.date }}</td>
